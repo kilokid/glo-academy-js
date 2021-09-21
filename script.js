@@ -1,3 +1,4 @@
+'use strict';
 const money = +prompt('Ваш месячный доход?');
 const income = 'Фриланс';
 const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
@@ -7,10 +8,10 @@ const expenses1 = prompt('Введите обязательную статью �
 const amount1 = +prompt('Во сколько это обойдется?', '500');
 const expenses2 = prompt('Введите обязательную статью расходов', 'Еда на месяц');
 const amount2 = +prompt('Во сколько это обойдется?', '5000');
-const budgetMonth = money - (amount1 + amount2);
-const accumulationPeriod = Math.ceil(mission / budgetMonth);
+const accumulatedMonth = getAccumulatedMonth();
+const accumulationPeriod = Math.ceil(mission / accumulatedMonth); // период накопления
 const period = 8;
-const budgetDay = Math.floor(budgetMonth / 30);
+const budgetDay = Math.floor(accumulatedMonth / 30); // бюджет на день
 
 let showTypeOf = function(data) {
     console.log(data, typeof(data));
@@ -20,12 +21,8 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-console.log(addExpenses.length);
-console.log(`Период равен ${period} месяцев. Цель заработать ${mission} рублей.`);
 console.log(addExpenses.toLowerCase().split(', '));
-console.log(budgetDay);
 
-console.log(`Бюджет на месяц: ${budgetMonth} рубль(ей)`);
 console.log(`Вы накопите нужную сумму через ${accumulationPeriod} месяца(ев)`);
 console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
 
@@ -41,3 +38,17 @@ let getStatusIncome = function() {
     } 
 };
 console.log(getStatusIncome());
+
+function getExpensesMonth() {
+    return amount1 + amount2; // сумма всех обязательных расходов за месяц
+}
+console.log(getExpensesMonth());
+
+function getAccumulatedMonth() {
+    return money - (amount1 + amount2); // накопления за месяц
+}
+
+function getTargetMonth() {
+    return mission / accumulatedMonth;
+}
+console.log(getTargetMonth());
