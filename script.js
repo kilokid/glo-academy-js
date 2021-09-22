@@ -1,16 +1,31 @@
 'use strict';
-const money = +prompt('Ваш месячный доход?');
+
+const isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+let money;
+
+const start = function() {
+    money = prompt('Ваш месячный доход?');
+
+    while (!isNumber(money)) {
+        money = prompt('Ваш месячный доход?');
+    }
+};
+
+start();
+
+const expenses = [];
+const expensesAmount = getExpensesMonth();
 const income = 'Фриланс';
 const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 const deposit = confirm('Есть ли у вас депозит в банке?'); 
 const mission = 150000;
-const expenses1 = prompt('Введите обязательную статью расходов', 'Интернет');
-const amount1 = +prompt('Во сколько это обойдется?', '500');
-const expenses2 = prompt('Введите обязательную статью расходов', 'Еда на месяц');
-const amount2 = +prompt('Во сколько это обойдется?', '5000');
 const accumulatedMonth = getAccumulatedMonth();
 const period = 8;
 const budgetDay = Math.floor(accumulatedMonth / 30);
+
 
 const showTypeOf = function(data) {
     console.log(data, typeof(data));
@@ -29,11 +44,20 @@ const getStatusIncome = function() {
 };
 
 function getExpensesMonth() {
-    return amount1 + amount2;
+    let sum = 0;
+
+    for (let i = 0; i < 2; i++) {
+
+        expenses[i] = prompt('Введите обязательную статью расходов');
+
+        sum += +prompt('Во сколько это обойдется?');
+    }
+
+    return sum;
 }
 
 function getAccumulatedMonth() {
-    return money - getExpensesMonth();
+    return money - expensesAmount;
 }
 
 function getTargetMonth() {
@@ -47,5 +71,5 @@ showTypeOf(deposit);
 console.log(addExpenses.toLowerCase().split(', '));
 console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
 console.log(getStatusIncome());
-console.log(`Сумма обязательных расходов за месяц составляет ${getExpensesMonth()} рублей`);
+console.log(`Сумма обязательных расходов за месяц составляет ${expensesAmount} рублей`);
 console.log(`Цель будет достигнута через ${getTargetMonth()} месяца(ев)`);
