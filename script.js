@@ -6,15 +6,18 @@ const isNumber = function(n) {
 
 let money;
 
-const start = function() {
+// const start = function() {
+//     money = prompt('Ваш месячный доход?');
+
+//     while (!isNumber(money)) {
+//         money = prompt('Ваш месячный доход?');
+//     }
+// };
+// start();
+do {
     money = prompt('Ваш месячный доход?');
-
-    while (!isNumber(money)) {
-        money = prompt('Ваш месячный доход?');
-    }
-};
-
-start();
+}
+while(!isNumber(money));
 
 const expenses = [];
 const expensesAmount = getExpensesMonth();
@@ -50,7 +53,13 @@ function getExpensesMonth() {
 
         expenses[i] = prompt('Введите обязательную статью расходов');
 
-        sum += +prompt('Во сколько это обойдется?');
+        sum += (() => {
+            let n = 0;
+            do {
+                n = prompt('Во сколько это обойдется?');
+            } while (!isNumber(n));
+            return +n;
+        })();
     }
 
     return sum;
@@ -64,6 +73,12 @@ function getTargetMonth() {
     return Math.ceil(mission / accumulatedMonth);
 }
 
+if (getTargetMonth() > 0) {
+    console.log(`Цель будет достигнута через ${getTargetMonth()} месяца(ев)`);
+} else {
+    console.log('Цель не будет достигнута');
+}
+
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
@@ -72,4 +87,3 @@ console.log(addExpenses.toLowerCase().split(', '));
 console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
 console.log(getStatusIncome());
 console.log(`Сумма обязательных расходов за месяц составляет ${expensesAmount} рублей`);
-console.log(`Цель будет достигнута через ${getTargetMonth()} месяца(ев)`);
