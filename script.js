@@ -9,24 +9,14 @@ const amount1 = +prompt('Во сколько это обойдется?', '500')
 const expenses2 = prompt('Введите обязательную статью расходов', 'Еда на месяц');
 const amount2 = +prompt('Во сколько это обойдется?', '5000');
 const accumulatedMonth = getAccumulatedMonth();
-const accumulationPeriod = Math.ceil(mission / accumulatedMonth); // период накопления
 const period = 8;
-const budgetDay = Math.floor(accumulatedMonth / 30); // бюджет на день
+const budgetDay = Math.floor(accumulatedMonth / 30);
 
-let showTypeOf = function(data) {
+const showTypeOf = function(data) {
     console.log(data, typeof(data));
 };
 
-showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
-
-console.log(addExpenses.toLowerCase().split(', '));
-
-console.log(`Вы накопите нужную сумму через ${accumulationPeriod} месяца(ев)`);
-console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
-
-let getStatusIncome = function() {
+const getStatusIncome = function() {
     if (budgetDay >= 1200) {
         return ('У вас высокий уровень дохода');
     } else if (budgetDay >= 600) {
@@ -37,18 +27,25 @@ let getStatusIncome = function() {
         return ('Что то пошло не так');
     } 
 };
-console.log(getStatusIncome());
 
 function getExpensesMonth() {
-    return amount1 + amount2; // сумма всех обязательных расходов за месяц
+    return amount1 + amount2;
 }
-console.log(getExpensesMonth());
 
 function getAccumulatedMonth() {
-    return money - (amount1 + amount2); // накопления за месяц
+    return money - getExpensesMonth();
 }
 
 function getTargetMonth() {
-    return mission / accumulatedMonth;
+    return Math.ceil(mission / accumulatedMonth);
 }
-console.log(getTargetMonth());
+
+showTypeOf(money);
+showTypeOf(income);
+showTypeOf(deposit);
+
+console.log(addExpenses.toLowerCase().split(', '));
+console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
+console.log(getStatusIncome());
+console.log(`Сумма обязательных расходов за месяц составляет ${getExpensesMonth()} рублей`);
+console.log(`Цель будет достигнута через ${getTargetMonth()} месяца(ев)`);
