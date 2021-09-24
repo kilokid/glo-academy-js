@@ -6,18 +6,12 @@ const isNumber = function(n) {
 
 let money;
 
-// const start = function() {
-//     money = prompt('Ваш месячный доход?');
-
-//     while (!isNumber(money)) {
-//         money = prompt('Ваш месячный доход?');
-//     }
-// };
-// start();
-do {
-    money = prompt('Ваш месячный доход?');
-}
-while(!isNumber(money));
+const start = function() {
+    do {
+        money = prompt('Ваш месячный доход?');
+    } while (!isNumber(money) || money === '' || money === null);
+};
+start();
 
 const expenses = [];
 const expensesAmount = getExpensesMonth();
@@ -53,13 +47,11 @@ function getExpensesMonth() {
 
         expenses[i] = prompt('Введите обязательную статью расходов');
 
-        sum += (() => {
-            let n = 0;
-            do {
-                n = prompt('Во сколько это обойдется?');
-            } while (!isNumber(n));
-            return +n;
-        })();
+        let expenseAmount = 0;
+        do {
+            expenseAmount = +prompt('Во сколько это обойдется?');
+        } while(!isNumber(expenseAmount));
+       sum += expenseAmount;
     }
 
     return sum;
