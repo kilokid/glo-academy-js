@@ -21,71 +21,64 @@ const appData = {
     deposit: false,
     mission: 150000,
     period: 8,
+    budget: money,
+    budgetDay: 0,
+    budgetMonth: 0,
+    expensesMonth: 0,
     asking: function() {
-        const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Комуналка');
             appData.addExpenses = addExpenses.toLowerCase().split(', ');
             appData.deposit = confirm('Есть ли у вас депозит в банке?');
-    }
+        for (let i = 0; i < 2; i++) {
+            let expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
+            let expenseAmount = 0;
+            do {
+                expenseAmount = +prompt('Во сколько это обойдется?', '2000');
+            } while(!isNumber(expenseAmount));
+            appData.expenses[expenseName] = expenseAmount;
+        }
+    },
+    getExpensesMonth: function() {
+        appData.expensesMonth = 0;
+        for (let key in appData.expenses) {
+            appData.expensesMonth += appData.expenses[key];
+        }
+    },
+    getBudget: function() {
+        appData.budgetMonth = appData.budget - appData.expensesMonth;
+        appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+    },
+    getTargetMonth: function() {
+        return Math.ceil(appData.mission / appData.budgetMonth);
+    },
+    getStatusIncome: function() {
+        if (appData.budgetDay >= 1200) {
+            return ('У вас высокий уровень дохода');
+        } else if (appData.budgetDay >= 600) {
+            return ('У вас сердний уровень дохода');
+        } else if (appData.budgetDay >= 0) {
+            return ('К сожалению ваш уровень дохода ниже среднего');
+        } else {
+            return ('Что то пошло не так');
+        } 
+    },
 };
 
-const expenses = [];
-const expensesAmount = getExpensesMonth();
+appData.asking();
+appData.getExpensesMonth();
+appData.getBudget();
+appData.getTargetMonth();
+appData.getStatusIncome();
 
-const accumulatedMonth = getAccumulatedMonth();
-const budgetDay = Math.floor(accumulatedMonth / 30);
+console.log(appData.getTargetMonth() > 0 ? 
+    console.log(`Цель будет достигнута через ${appData.getTargetMonth()} месяца(ев)`) : 
+    console.log('Цель не будет достигнута'));
 
+console.log(`Ваш дневной бюджет: ${appData.budgetDay} рубль(ей)`);
+console.log(appData.getStatusIncome());
+console.log(`Сумма обязательных расходов за месяц составляет ${appData.expensesMonth} рублей`);
 
-const showTypeOf = function(data) {
-    console.log(data, typeof(data));
-};
-
-const getStatusIncome = function() {
-    if (budgetDay >= 1200) {
-        return ('У вас высокий уровень дохода');
-    } else if (budgetDay >= 600) {
-        return ('У вас сердний уровень дохода');
-    } else if (budgetDay >= 0) {
-        return ('К сожалению ваш уровень дохода ниже среднего');
-    } else {
-        return ('Что то пошло не так');
-    } 
-};
-
-function getExpensesMonth() {
-    let sum = 0;
-
-    for (let i = 0; i < 2; i++) {
-
-        expenses[i] = prompt('Введите обязательную статью расходов');
-
-        let expenseAmount = 0;
-        do {
-            expenseAmount = +prompt('Во сколько это обойдется?');
-        } while(!isNumber(expenseAmount));
-       sum += expenseAmount;
-    }
-
-    return sum;
+console.log('Наша программа включает в себя данные:');
+for (let key in appData) {
+    console.log(key + appData[key]);
 }
-
-function getAccumulatedMonth() {
-    return money - expensesAmount;
-}
-
-function getTargetMonth() {
-    return Math.ceil(appData.mission / accumulatedMonth);
-}
-
-if (getTargetMonth() > 0) {
-    console.log(`Цель будет достигнута через ${getTargetMonth()} месяца(ев)`);
-} else {
-    console.log('Цель не будет достигнута');
-}
-
-showTypeOf(appData.money);
-showTypeOf(appData.income);
-showTypeOf(appData.deposit);
-
-console.log(`Ваш дневной бюджет: ${budgetDay} рубль(ей)`);
-console.log(getStatusIncome());
-console.log(`Сумма обязательных расходов за месяц составляет ${expensesAmount} рублей`);
