@@ -9,7 +9,7 @@ let money;
 const start = function() {
     do {
         money = prompt('Ваш месячный доход?');
-    } while (!isNumber(money) || money === '' || money === null);
+    } while (!isNumber(money));
 };
 start();
 
