@@ -27,10 +27,10 @@ const appData = {
     expensesMonth: 0,
     asking: function() {
         const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Комуналка');
-            appData.addExpenses = addExpenses.toLowerCase().split(', ');
-            appData.deposit = confirm('Есть ли у вас депозит в банке?');
+              appData.addExpenses = addExpenses.toLowerCase().split(', ');
+              appData.deposit = confirm('Есть ли у вас депозит в банке?');
         for (let i = 0; i < 2; i++) {
-            let expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
+            const expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
             let expenseAmount = 0;
             do {
                 expenseAmount = +prompt('Во сколько это обойдется?', '2000');
@@ -40,8 +40,8 @@ const appData = {
     },
     getExpensesMonth: function() {
         appData.expensesMonth = 0;
-        for (let key in appData.expenses) {
-            appData.expensesMonth += appData.expenses[key];
+        for (let expenseName in appData.expenses) {
+            appData.expensesMonth += appData.expenses[expenseName];
         }
     },
     getBudget: function() {
