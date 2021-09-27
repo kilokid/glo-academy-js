@@ -122,4 +122,4 @@ console.log('Наша программа включает в себя данны
 for (let key in appData) {
     console.log(key + appData[key]);
 }
-console.log(appData.addExpenses.map(items => items.replace(/./, firstSymbol => firstSymbol.toUpperCase())).join(', '));
+console.log(appData.addExpenses.map(item => item.replace(/./, firstSymbol => firstSymbol.toUpperCase())).join(', '));
