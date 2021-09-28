@@ -41,7 +41,6 @@ const appData = {
             } while(!isNumber(cashIncome));
             
             appData.income[itemIncome] = cashIncome;
-            console.log(appData.income);
         }
 
         const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Коммуналка');
