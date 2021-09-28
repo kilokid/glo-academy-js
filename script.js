@@ -33,7 +33,7 @@ const appData = {
             let itemIncome;
             do {
                 itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Фриланс');
-            } while(isNumber(itemIncome) || itemIncome === '');
+            } while(!isNumber(itemIncome) && !itemIncome.length);
 
             let cashIncome = 0;
             do {
@@ -41,6 +41,7 @@ const appData = {
             } while(!isNumber(cashIncome));
             
             appData.income[itemIncome] = cashIncome;
+            console.log(appData.income);
         }
 
         const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Коммуналка');
@@ -51,7 +52,7 @@ const appData = {
             let expenseName;
             do {
                 expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
-            } while(isNumber(expenseName) || expenseName === '');
+            } while(isNumber(expenseName) || !expenseName.length);
 
             let expenseAmount = 0;
             do {
@@ -102,13 +103,14 @@ const appData = {
     calcSavedmoney: function() {
         return appData.budgetMonth * appData.period;
     },
+    capitalizerFirstLetter: function(arr) {
+        return arr.map(item => item[0].toUpperCase() + item.slice(1)).join(', ');
+    },
 };
 
 appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
-appData.getTargetMonth();
-appData.getStatusIncome();
 
 console.log(appData.getTargetMonth() > 0 ? 
     console.log(`Цель будет достигнута через ${appData.getTargetMonth()} месяца(ев)`) : 
@@ -120,6 +122,6 @@ console.log(`Сумма обязательных расходов за меся�
 
 console.log('Наша программа включает в себя данные:');
 for (let key in appData) {
-    console.log(key + appData[key]);
+    console.log(`Свойство ${key} со значением: ${appData[key]}`);
 }
-console.log(appData.addExpenses.map(item => item.replace(/./, firstSymbol => firstSymbol.toUpperCase())).join(', '));
+console.log(appData.capitalizerFirstLetter(appData.addExpenses));
