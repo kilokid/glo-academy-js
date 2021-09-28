@@ -30,7 +30,7 @@ const appData = {
     asking: function() {
 
         if (confirm('Есть ли у вас дополнительный источник заработка?')) {
-            let itemIncome;
+            let itemIncome = '';
             do {
                 itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Фриланс');
             } while(!isNumber(itemIncome) && !itemIncome.length);
@@ -49,7 +49,7 @@ const appData = {
               appData.deposit = confirm('Есть ли у вас депозит в банке?');
               appData.getInfoDeposit();
         for (let i = 0; i < 2; i++) {
-            let expenseName;
+            let expenseName = '';
             do {
                 expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
             } while(isNumber(expenseName) || !expenseName.length);
