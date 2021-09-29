@@ -9,7 +9,7 @@ let money;
 const start = function() {
     do {
         money = prompt('Ваш месячный доход?');
-    } while (!isNumber(money));
+    } while (!isNumber(money) || money <= 0);
 };
 start();
 
@@ -27,18 +27,19 @@ const appData = {
     budgetDay: 0,
     budgetMonth: 0,
     expensesMonth: 0,
+    targetMonth: 0,
     asking: function() {
 
         if (confirm('Есть ли у вас дополнительный источник заработка?')) {
             let itemIncome = '';
             do {
                 itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Фриланс');
-            } while(!isNumber(itemIncome) && !itemIncome.length);
+            } while(isNumber(itemIncome) || !itemIncome.length);
 
-            let cashIncome = 0;
+            let cashIncome;
             do {
                 cashIncome = prompt('Сколько в месяц вы зарабатываете на этом?', '10000');
-            } while(!isNumber(cashIncome));
+            } while(!isNumber(cashIncome) || cashIncome <= 0);
             
             appData.income[itemIncome] = cashIncome;
         }
@@ -56,7 +57,7 @@ const appData = {
             let expenseAmount = 0;
             do {
                 expenseAmount = +prompt('Во сколько это обойдется?', '2000');
-            } while(!isNumber(expenseAmount));
+            } while(!isNumber(expenseAmount) || expenseAmount <= 0);
             appData.expenses[expenseName] = expenseAmount;
         }
     },
@@ -71,7 +72,7 @@ const appData = {
         appData.budgetDay = Math.floor(appData.budgetMonth / 30);
     },
     getTargetMonth: function() {
-        return Math.ceil(appData.mission / appData.budgetMonth);
+        appData.targetMonth = Math.ceil(appData.mission / appData.budgetMonth);
     },
     getStatusIncome: function() {
         if (appData.budgetDay >= 1200) {
@@ -89,13 +90,13 @@ const appData = {
             let percentDeposit = 0;
             do {
                 percentDeposit = prompt('Какой годовой процент?', '10');
-            } while (!isNumber(percentDeposit));
+            } while (!isNumber(percentDeposit) || percentDeposit <= 0);
             appData.percentDeposit = percentDeposit;
 
             let moneyDeposit = 0;
             do {
                 moneyDeposit = prompt('Какая сумма заложена?', '10000');
-            } while (!isNumber(moneyDeposit));
+            } while (!isNumber(moneyDeposit) || moneyDeposit <= 0);
             appData.moneyDeposit = moneyDeposit;
         }
     },
@@ -110,10 +111,13 @@ const appData = {
 appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
+appData.getTargetMonth();
 
-console.log(appData.getTargetMonth() > 0 ? 
-    console.log(`Цель будет достигнута через ${appData.getTargetMonth()} месяца(ев)`) : 
-    console.log('Цель не будет достигнута'));
+console.log(appData.targetMonth);
+
+(appData.targetMonth > 0) ? 
+    console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
+    console.log('Цель не будет достигнута');
 
 console.log(`Ваш дневной бюджет: ${appData.budgetDay} рубль(ей)`);
 console.log(appData.getStatusIncome());
