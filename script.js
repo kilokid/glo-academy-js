@@ -4,7 +4,7 @@ const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-const capitalizerFirstLetter = function(arr) {
+const capitalizeFirstLetter = function(arr) {
     return arr.map(item => item[0].toUpperCase() + item.slice(1)).join(', ');
 };
 
@@ -134,4 +134,4 @@ for (let elem in appData) {
     console.log(elem, appData[elem]);
 }
 
-console.log(capitalizerFirstLetter(appData.addExpenses));
+console.log(capitalizeFirstLetter(appData.addExpenses));
