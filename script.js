@@ -44,7 +44,11 @@ const appData = {
             appData.income[itemIncome] = cashIncome;
         }
 
-        const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Коммуналка');
+        let addExpenses = '';
+        do {
+            addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Коммуналка');
+        } while (isNumber(addExpenses) || !addExpenses.length);
+        appData.addExpenses = addExpenses;
               appData.addExpenses = addExpenses.toLowerCase().split(', ');
               appData.deposit = confirm('Есть ли у вас депозит в банке?');
               appData.getInfoDeposit();
@@ -113,9 +117,6 @@ appData.getExpensesMonth();
 appData.getBudget();
 appData.getTargetMonth();
 
-console.log(appData.expenses);
-console.log(appData.income);
-
 appData.targetMonth > 0 ? 
     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
     console.log('Цель не будет достигнута');
@@ -125,7 +126,17 @@ console.log(appData.getStatusIncome());
 console.log(`Сумма обязательных расходов за месяц составляет ${appData.expensesMonth} рублей`);
 
 console.log('Наша программа включает в себя данные:');
+
 for (let key in appData) {
-    console.log(`Свойство ${key} со значением: ${appData[key]}`);
+    if(typeof(appData[key]) === 'object'){
+
+        for(let i in appData[key]){
+            console.log(`Объект ${key} имеет значение ${i} со свойством ${appData[key][i]}`); 
+        }    
+    }
+    else{
+        console.log(`Свойство ${key} имеет значение ${appData[key]}`);
+    }  
 }
+
 console.log(appData.capitalizerFirstLetter(appData.addExpenses));
