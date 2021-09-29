@@ -33,7 +33,7 @@ const appData = {
         if (confirm('Есть ли у вас дополнительный источник заработка?')) {
             let itemIncome = '';
             do {
-                itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Фриланс');
+                itemIncome = prompt('Какой у вас есть дополнительный заработок?', 'Фриланс').toLowerCase();
             } while(isNumber(itemIncome) || !itemIncome.length);
 
             let cashIncome;
@@ -51,7 +51,7 @@ const appData = {
         for (let i = 0; i < 2; i++) {
             let expenseName = '';
             do {
-                expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц');
+                expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц').toLowerCase();
             } while(isNumber(expenseName) || !expenseName.length);
 
             let expenseAmount = 0;
@@ -113,9 +113,10 @@ appData.getExpensesMonth();
 appData.getBudget();
 appData.getTargetMonth();
 
-console.log(appData.targetMonth);
+console.log(appData.expenses);
+console.log(appData.income);
 
-(appData.targetMonth > 0) ? 
+appData.targetMonth > 0 ? 
     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
     console.log('Цель не будет достигнута');
 
