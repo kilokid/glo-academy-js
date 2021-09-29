@@ -4,6 +4,10 @@ const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+const capitalizerFirstLetter = function(arr) {
+    return arr.map(item => item[0].toUpperCase() + item.slice(1)).join(', ');
+};
+
 let money;
 
 const start = function() {
@@ -38,7 +42,7 @@ const appData = {
 
             let cashIncome;
             do {
-                cashIncome = prompt('Сколько в месяц вы зарабатываете на этом?', '10000');
+                cashIncome = +prompt('Сколько в месяц вы зарабатываете на этом?', '10000');
             } while(!isNumber(cashIncome) || cashIncome <= 0);
             
             appData.income[itemIncome] = cashIncome;
@@ -48,20 +52,21 @@ const appData = {
         do {
             addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Театр, КиНо, Ресторан, Коммуналка');
         } while (isNumber(addExpenses) || !addExpenses.length);
-        appData.addExpenses = addExpenses;
-              appData.addExpenses = addExpenses.toLowerCase().split(', ');
-              appData.deposit = confirm('Есть ли у вас депозит в банке?');
-              appData.getInfoDeposit();
+        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+
+        appData.deposit = confirm('Есть ли у вас депозит в банке?');
+        appData.getDepositInfo();
+
         for (let i = 0; i < 2; i++) {
             let expenseName = '';
             do {
                 expenseName = prompt('Введите обязательную статью расходов?', 'Еда на месяц').toLowerCase();
-            } while(isNumber(expenseName) || !expenseName.length);
+            } while(isNumber(expenseName) || !expenseName.trim().length);
 
             let expenseAmount = 0;
             do {
                 expenseAmount = +prompt('Во сколько это обойдется?', '2000');
-            } while(!isNumber(expenseAmount) || expenseAmount <= 0);
+            } while(!isNumber(expenseAmount) || expenseAmount <= 0) ;
             appData.expenses[expenseName] = expenseAmount;
         }
     },
@@ -89,7 +94,7 @@ const appData = {
             return ('Что то пошло не так');
         } 
     },
-    getInfoDeposit: function() {
+    getDepositInfo: function() {
         if (appData.deposit) {
             let percentDeposit = 0;
             do {
@@ -106,9 +111,6 @@ const appData = {
     },
     calcSavedmoney: function() {
         return appData.budgetMonth * appData.period;
-    },
-    capitalizerFirstLetter: function(arr) {
-        return arr.map(item => item[0].toUpperCase() + item.slice(1)).join(', ');
     },
 };
 
@@ -127,16 +129,9 @@ console.log(`Сумма обязательных расходов за меся�
 
 console.log('Наша программа включает в себя данные:');
 
-for (let key in appData) {
-    if(typeof(appData[key]) === 'object'){
-
-        for(let i in appData[key]){
-            console.log(`Объект ${key} имеет значение ${i} со свойством ${appData[key][i]}`); 
-        }    
-    }
-    else{
-        console.log(`Свойство ${key} имеет значение ${appData[key]}`);
-    }  
+console.log('Наша программа включает в себя данные: ');
+for (let elem in appData) {
+    console.log(elem, appData[elem]);
 }
 
-console.log(appData.capitalizerFirstLetter(appData.addExpenses));
+console.log(capitalizerFirstLetter(appData.addExpenses));
