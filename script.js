@@ -4,8 +4,6 @@ const additionalIncomeButton = document.getElementsByTagName('button')[0];
 const ExpensesAddButton = document.getElementsByTagName('button')[1];
 const depositCheckbox = document.querySelector('#deposit-check');
 const additionalIncomeItems = document.querySelectorAll('.additional_income-item');
-
-// right
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
 const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
 const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
@@ -14,7 +12,6 @@ const additionalExpensesValue = document.getElementsByClassName('additional_expe
 const incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
 const targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 const calculateBtn = document.getElementById('start');
-
 const salaryAmount = document.querySelector('.salary-amount');
 const incomeTitle = document.querySelector('.income-items').children[0];
 const incomeAmount = document.querySelector('.income-amount');
@@ -26,27 +23,3 @@ const periodRange = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 const depositAmount = document.querySelector('.deposit-amount');
 const depositPercent = document.querySelector('.deposit-percent');
-
-console.log(additionalIncomeButton);
-console.log(ExpensesAddButton);
-console.log(depositCheckbox);
-console.log(additionalIncomeItems);
-
-console.log(budgetMonthValue);
-console.log(budgetDayValue);
-console.log(expensesMonthValue);
-console.log(additionalIncomeValue);
-console.log(additionalExpensesValue);
-console.log(incomePeriodValue);
-console.log(targetMonthValue);
-console.log(calculateBtn);
-
-console.log(salaryAmount);
-console.log(incomeTitle);
-console.log(incomeAmount);
-console.log(expensesTitle);
-console.log(expensesAmount);
-console.log(additionalExpensesItem);
-console.log(targetAmount);
-console.log(periodRange);
-console.log(periodAmount);
