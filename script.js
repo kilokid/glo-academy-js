@@ -7,10 +7,6 @@ const liBookVisibilitu = books[0].querySelectorAll('li');
 const liBookAsync = books[5].querySelectorAll('li');
 const liBookES6 = books[2].querySelectorAll('li');
 
-console.log(books);
-console.log(booksTitle);
-console.log(liBookES6);
-
 booksContainer.prepend(books[1], books[0], books[4], books[3], books[5], books[2]);
 
 body.style.backgroundImage = 'url(./image/you-dont-know.jpg)';
