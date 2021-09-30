@@ -2,10 +2,10 @@
 
 const calculateBtn = document.getElementById('start');
 console.log(calculateBtn);
-const PlusBtn1 = document.getElementsByTagName('button')[0];
-console.log(PlusBtn1);
-const PlusBtn2 = document.getElementsByTagName('button')[1];
-console.log(PlusBtn2);
+const additionalIncomeplus = document.getElementsByTagName('button')[0];
+console.log(additionalIncomeplus);
+const complusoryExpensesPlus = document.getElementsByTagName('button')[1];
+console.log(complusoryExpensesPlus);
 const depositCheckbox = document.querySelector('#deposit-check');
 console.log(depositCheckbox);
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item');
