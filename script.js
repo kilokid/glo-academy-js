@@ -40,4 +40,3 @@ const periodSelect = document.querySelector('.period-select');
 console.log(periodSelect);
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
 console.log(budgetMonthValue);
-'helo';
