@@ -24,11 +24,11 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 console.log(targetMonthValue);
 const salaryAmount = document.querySelector('.salary-amount');
 console.log(salaryAmount);
-const incomeTitle = document.querySelector('.income-title');
+const incomeTitle = document.querySelector('.income-items').children[0];
 console.log(incomeTitle);
 const incomeAmount = document.querySelector('.income-amount');
 console.log(incomeAmount);
-const expensesTitle = document.querySelector('.expenses-title');
+const expensesTitle = document.querySelector('.expenses-items').children[0];
 console.log(expensesTitle);
 const expensesAmount = document.querySelector('.expenses-amount');
 console.log(expensesAmount);
@@ -40,3 +40,4 @@ const periodSelect = document.querySelector('.period-select');
 console.log(periodSelect);
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
 console.log(budgetMonthValue);
+'helo';
