@@ -1,7 +1,7 @@
 'use strict';
 
 const additionalIncomeButton = document.getElementsByTagName('button')[0];
-const ExpensesAddButton = document.getElementsByTagName('button')[1];
+const expensesAddButton = document.getElementsByTagName('button')[1];
 const depositCheckbox = document.querySelector('#deposit-check');
 const additionalIncomeItems = document.querySelectorAll('.additional_income-item');
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
