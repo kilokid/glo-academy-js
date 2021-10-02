@@ -184,6 +184,7 @@ expensesAddButton.addEventListener('click', appData.addExpensesBlock);
 incomeAddButton.addEventListener('click', appData.addIncomeBlock);
 
 periodRange.addEventListener('input', appData.changeNumRange);
+
 // appData.targetMonth > 0 ? 
 //     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
 //     console.log('Цель не будет достигнута');
