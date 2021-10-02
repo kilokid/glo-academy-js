@@ -123,12 +123,12 @@ const appData = {
         periodAmount.textContent = `${periodRange.value}`;
     },
     disabledStartBtn: function() {
-        calculateBtn.setAttribute('disabled');
-        if (salaryAmount.value == '') {
-            calculateBtn.disabled = true;
-        } else {
-            // calculateBtn.removeAttribute('disabled');
+        if (salaryAmount.value !== '') {
+            calculateBtn.removeAttribute('disabled', false);
             appData.budget = +salaryAmount.value;
+        } else {
+            calculateBtn.setAttribute('disabled', true);
+           
         }
     },
     getExpensesMonth: function() {
@@ -174,6 +174,7 @@ const appData = {
         return appData.budgetMonth * periodRange.value;
     },
 };
+calculateBtn.setAttribute('disabled', true);
 
 salaryAmount.addEventListener('input', appData.disabledStartBtn);
 calculateBtn.addEventListener('click', appData.start);
