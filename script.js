@@ -60,15 +60,12 @@ const appData = {
         additionalIncomeValue.value = appData.addIncome.join(', ');
         targetMonthValue.value = appData.getTargetMonth();
         incomePeriodValue.value = appData.calcPeriod(); 
-        periodRange.addEventListener('input', function() {
-            incomePeriodValue.value = appData.calcPeriod();
-        });
     },
     addExpensesBlock: function() {
         const cloneExpensesItems = expensesItems[0].cloneNode(true);
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesAddButton);
+        expensesItems[0].insertAdjacentElement('afterend', cloneExpensesItems);
         expensesItems = document.querySelectorAll('.expenses-items');
-        if (expensesItems.length === 3) {
+        if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
         }
     },
@@ -76,16 +73,16 @@ const appData = {
         expensesItems.forEach(function(item) {
             const itemExpenses = item.querySelector('.expenses-title').value;
             const cashExpenses = item.querySelector('.expenses-amount').value;
-            if (itemExpenses !== '' && cashExpenses !== '') {
+            if (itemExpenses.length && cashExpenses.length) {
                 appData.expenses[itemExpenses] = +cashExpenses;
             }
         });
     },
     addIncomeBlock: function() {
         const cloneIncomeItems = incomeItems[0].cloneNode(true);
-        incomeItems[0].parentNode.insertBefore(cloneIncomeItems, incomeAddButton);
+        incomeItems[0].insertAdjacentElement('afterend', cloneIncomeItems);
         incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length === 3) {
+        if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
         }
     },
@@ -93,14 +90,11 @@ const appData = {
         incomeItems.forEach(function(item) {
             const itemIncome = item.querySelector('.income-title').value ;
             const cashIncome = item.querySelector('.income-amount').value;
-            if (itemIncome !== '' && cashIncome !== '') {
+            if (itemIncome.length && cashIncome.length) {
                 appData.income[itemIncome] = +cashIncome;
+                appData.incomeMonth += +cashIncome;
             }
         });
-
-        for (let key in appData.income) {
-            appData.incomeMonth += +appData.income[key];
-        }
     },
     getAddExpenses: function() {
         const addExpenses = additionalExpensesItem.value.split(',');
@@ -120,16 +114,13 @@ const appData = {
         });
     },
     changeNumRange: function() {
-        periodAmount.textContent = `${periodRange.value}`;
+        periodRange.addEventListener('input', function() {
+            incomePeriodValue.value = appData.calcPeriod();
+        });
+        periodAmount.textContent = periodRange.value;
     },
-    disabledStartBtn: function() {
-        if (salaryAmount.value !== '') {
-            calculateBtn.removeAttribute('disabled', false);
-            appData.budget = +salaryAmount.value;
-        } else {
-            calculateBtn.setAttribute('disabled', true);
-           
-        }
+    blockStart: function() {
+        calculateBtn.disabled = !salaryAmount.value;
     },
     getExpensesMonth: function() {
         for (let expenseName in appData.expenses) {
@@ -137,6 +128,7 @@ const appData = {
         }
     },
     getBudget: function() {
+        appData.budget = +salaryAmount.value;
         appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
         appData.budgetDay = Math.floor(appData.budgetMonth / 30);
     },
@@ -174,9 +166,9 @@ const appData = {
         return appData.budgetMonth * periodRange.value;
     },
 };
-calculateBtn.setAttribute('disabled', true);
 
-salaryAmount.addEventListener('input', appData.disabledStartBtn);
+appData.blockStart();
+salaryAmount.addEventListener('input', appData.blockStart);
 calculateBtn.addEventListener('click', appData.start);
 
 expensesAddButton.addEventListener('click', appData.addExpensesBlock);
