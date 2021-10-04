@@ -50,7 +50,7 @@ const appData = {
         appData.getAddExpenses();
         appData.getAddIncome();
         appData.getBudget();
-        appData.changeIncomePeriod();
+        appData.listenIncomePeriod();
         appData.showResult();
     },
     showResult: function() {
