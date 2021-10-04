@@ -61,7 +61,6 @@ const appData = {
         additionalIncomeValue.value = appData.addIncome.join(', ');
         targetMonthValue.value = appData.getTargetMonth();
         incomePeriodValue.value = appData.calcPeriod();
-        console.log(this.expenses);
     },
     addExpensesBlock: function() {
         const cloneExpensesItems = expensesItems[0].cloneNode(true);
@@ -79,8 +78,8 @@ const appData = {
         expensesItems.forEach(function(item) {
             const itemExpenses = item.querySelector('.expenses-title').value.toLowerCase();
             const cashExpenses = item.querySelector('.expenses-amount').value;
-            if (!isNumber(itemExpenses) && itemExpenses.trim().length && Number(cashExpenses) > 0) {
-                appData.expenses[itemExpenses] = +cashExpenses;
+            if (!isNumber(itemExpenses) && itemExpenses.length && Number(cashExpenses) > 0) {
+                appData.expenses[itemExpenses.trim()] = +cashExpenses;
             }
         });
     },
@@ -100,8 +99,8 @@ const appData = {
         incomeItems.forEach(function(item) {
             const itemIncome = item.querySelector('.income-title').value.toLowerCase();
             const cashIncome = item.querySelector('.income-amount').value;
-            if (isNumber(itemIncome) && itemIncome.trim().length && Number(cashIncome) > 0) {
-                appData.income[itemIncome] = +cashIncome;
+            if (isNumber(itemIncome) && itemIncome.length && Number(cashIncome) > 0) {
+                appData.income[itemIncome.trim()] = +cashIncome;
                 appData.incomeMonth += +cashIncome;
             }
         });
