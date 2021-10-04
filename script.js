@@ -61,7 +61,6 @@ const appData = {
         additionalIncomeValue.value = appData.addIncome.join(', ');
         targetMonthValue.value = appData.getTargetMonth();
         incomePeriodValue.value = appData.calcPeriod();
-        console.log(this.income);
     },
     addExpensesBlock: function() {
         const cloneExpensesItems = expensesItems[0].cloneNode(true);
@@ -172,7 +171,7 @@ const appData = {
     calcPeriod: function() {
         return appData.budgetMonth * periodRange.value;
     },
-    changeIncomePeriod: function() {
+    listenIncomePeriod: function() {
         periodRange.addEventListener('input', function() {
             incomePeriodValue.value = appData.calcPeriod();
         });
