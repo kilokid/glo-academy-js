@@ -66,9 +66,7 @@ const appData = {
         const cloneExpensesItems = expensesItems[0].cloneNode(true);
         cloneExpensesItems.querySelector('.expenses-title').value = '';
         cloneExpensesItems.querySelector('.expenses-amount').value = '';
-        expensesItems.forEach(function(item) {
-            item.after(cloneExpensesItems);
-        });
+        expensesAddButton.before(cloneExpensesItems);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
@@ -76,10 +74,10 @@ const appData = {
     },
     getExpenses: function() {
         expensesItems.forEach(function(item) {
-            const itemExpenses = item.querySelector('.expenses-title').value.toLowerCase();
-            const cashExpenses = item.querySelector('.expenses-amount').value;
-            if (!isNumber(itemExpenses) && itemExpenses.trim().length && Number(cashExpenses) > 0) {
-                appData.expenses[itemExpenses.trim()] = +cashExpenses;
+            const itemExpenses = item.querySelector('.expenses-title').value.trim();
+            const cashExpenses = item.querySelector('.expenses-amount').value.trim();
+            if (itemExpenses !== '' && cashExpenses !== '') {
+                appData.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
             }
         });
     },
@@ -87,9 +85,7 @@ const appData = {
         const cloneIncomeItems = incomeItems[0].cloneNode(true);
         cloneIncomeItems.querySelector('.income-title').value = '';
         cloneIncomeItems.querySelector('.income-amount').value = '';
-        incomeItems.forEach(function(item) {
-            item.after(cloneIncomeItems);
-        });
+        incomeAddButton.before(cloneIncomeItems);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
@@ -97,10 +93,10 @@ const appData = {
     },
     getIncome: function() {
         incomeItems.forEach(function(item) {
-            const itemIncome = item.querySelector('.income-title').value.toLowerCase();
-            const cashIncome = item.querySelector('.income-amount').value;
-            if (!isNumber(itemIncome) && itemIncome.trim().length && Number(cashIncome) > 0) {
-                appData.income[itemIncome.trim()] = +cashIncome;
+            const itemIncome = item.querySelector('.income-title').value.trim();
+            const cashIncome = item.querySelector('.income-amount').value.trim();
+            if (itemIncome !== '' && cashIncome !== '') {
+                appData.income[itemIncome.toLowerCase()] = +cashIncome;
                 appData.incomeMonth += +cashIncome;
             }
         });
