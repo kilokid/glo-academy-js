@@ -64,7 +64,7 @@ const appData = {
             let expenseAmount = 0;
             do {
                 expenseAmount = +prompt('Во сколько это обойдется?', '2000');
-            } while(!isNumber(expenseAmount) || expenseAmount <= 0) ;
+            } while(!isNumber(expenseAmount) || expenseAmount <= 0);
             appData.expenses[expenseName] = expenseAmount;
         }
     },
