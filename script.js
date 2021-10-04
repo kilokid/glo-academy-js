@@ -63,10 +63,10 @@ const appData = {
         incomePeriodValue.value = appData.calcPeriod();
     },
     addExpensesBlock: function() {
-        const cloneExpensesItems = expensesItems[0].cloneNode(true);
-        cloneExpensesItems.querySelector('.expenses-title').value = '';
-        cloneExpensesItems.querySelector('.expenses-amount').value = '';
-        expensesAddButton.before(cloneExpensesItems);
+        const cloneExpensesItem = expensesItems[0].cloneNode(true);
+        cloneExpensesItem.querySelector('.expenses-title').value = '';
+        cloneExpensesItem.querySelector('.expenses-amount').value = '';
+        expensesAddButton.before(cloneExpensesItem);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
@@ -82,10 +82,10 @@ const appData = {
         });
     },
     addIncomeBlock: function() {
-        const cloneIncomeItems = incomeItems[0].cloneNode(true);
-        cloneIncomeItems.querySelector('.income-title').value = '';
-        cloneIncomeItems.querySelector('.income-amount').value = '';
-        incomeAddButton.before(cloneIncomeItems);
+        const cloneIncomeItem = incomeItems[0].cloneNode(true);
+        cloneIncomeItem.querySelector('.income-title').value = '';
+        cloneIncomeItem.querySelector('.income-amount').value = '';
+        incomeAddButton.before(cloneIncomeItem);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
