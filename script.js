@@ -75,7 +75,7 @@ const appData = {
     getExpenses: function() {
         expensesItems.forEach(function(item) {
             const itemExpenses = item.querySelector('.expenses-title').value.trim();
-            const cashExpenses = item.querySelector('.expenses-amount').value.trim();
+            const cashExpenses = item.querySelector('.expenses-amount').value;
             if (itemExpenses !== '' && cashExpenses !== '') {
                 appData.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
             }
@@ -94,7 +94,7 @@ const appData = {
     getIncome: function() {
         incomeItems.forEach(function(item) {
             const itemIncome = item.querySelector('.income-title').value.trim();
-            const cashIncome = item.querySelector('.income-amount').value.trim();
+            const cashIncome = item.querySelector('.income-amount').value;
             if (itemIncome !== '' && cashIncome !== '') {
                 appData.income[itemIncome.toLowerCase()] = +cashIncome;
                 appData.incomeMonth += +cashIncome;
@@ -183,6 +183,25 @@ expensesAddButton.addEventListener('click', appData.addExpensesBlock);
 incomeAddButton.addEventListener('click', appData.addIncomeBlock);
 
 periodRange.addEventListener('input', appData.changeNumRange);
+
+const changeInputText = function(event) {
+    const target = event.target;
+    const regStr = /[A-Za-z0-9]/g;
+    target.value = target.value.replace(regStr, '');
+};
+
+const changeInputNumber = function(event) {
+    const target = event.target;
+    const regStr = /\D/g;
+    target.value = target.value.replace(regStr, '');
+};
+
+document.querySelectorAll('[placeholder="Наименование"]').forEach(input => {
+    input.addEventListener('input', changeInputText);
+});
+document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
+    input.addEventListener('input', changeInputNumber);
+});
 
 // appData.targetMonth > 0 ? 
 //     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
