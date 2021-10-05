@@ -75,7 +75,7 @@ const appData = {
     getExpenses: function() {
         expensesItems.forEach(function(item) {
             const itemExpenses = item.querySelector('.expenses-title').value.trim();
-            const cashExpenses = item.querySelector('.expenses-amount').value.trim();
+            const cashExpenses = item.querySelector('.expenses-amount').value;
             if (itemExpenses !== '' && cashExpenses !== '') {
                 appData.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
             }
@@ -94,7 +94,7 @@ const appData = {
     getIncome: function() {
         incomeItems.forEach(function(item) {
             const itemIncome = item.querySelector('.income-title').value.trim();
-            const cashIncome = item.querySelector('.income-amount').value.trim();
+            const cashIncome = item.querySelector('.income-amount').value;
             if (itemIncome !== '' && cashIncome !== '') {
                 appData.income[itemIncome.toLowerCase()] = +cashIncome;
                 appData.incomeMonth += +cashIncome;
