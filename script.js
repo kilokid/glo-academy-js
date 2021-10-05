@@ -184,6 +184,25 @@ incomeAddButton.addEventListener('click', appData.addIncomeBlock);
 
 periodRange.addEventListener('input', appData.changeNumRange);
 
+const changeInputText = function(event) {
+    const target = event.target;
+    const regStr = /[A-Za-z0-9]/g;
+    target.value = target.value.replace(regStr, '');
+};
+
+const changeInputNumber = function(event) {
+    const target = event.target;
+    const regStr = /\D/g;
+    target.value = target.value.replace(regStr, '');
+};
+
+document.querySelectorAll('[placeholder="Наименование"]').forEach(input => {
+    input.addEventListener('input', changeInputText);
+});
+document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
+    input.addEventListener('input', changeInputNumber);
+});
+
 // appData.targetMonth > 0 ? 
 //     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
 //     console.log('Цель не будет достигнута');
