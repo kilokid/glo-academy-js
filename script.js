@@ -78,6 +78,17 @@ const appData = {
         this.expensesMonth = 0;
         this.resetInput();
         this.showCalcBtn();
+        this.blockStart();
+
+        for (let i = 1; i < incomeItems.length; i++) {
+            incomeItems[i].parentNode.removeChild(incomeItems[i]);
+            incomeAddButton.style.display = 'block';
+        }
+
+        for (let i = 1; i < expensesItems.length; i++) {
+            expensesItems[i].parentNode.removeChild(expensesItems[i]);
+            expensesAddButton.style.display = 'block';
+        }
     },
     showResult: function() {
         budgetMonthValue.value = this.budgetMonth; 
@@ -151,7 +162,7 @@ const appData = {
         calculateBtn.disabled = !salaryAmount.value;
     },
     getExpensesMonth: function() {
-        for (let expenseName in appData.expenses) {
+        for (let expenseName in this.expenses) {
             this.expensesMonth += +this.expenses[expenseName];
         }
     },
