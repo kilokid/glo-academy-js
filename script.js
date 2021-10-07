@@ -110,11 +110,12 @@ const appData = {
         }
     },
     getExpenses: function() {
+        const _this = this;
         expensesItems.forEach(function(item) {
             const itemExpenses = item.querySelector('.expenses-title').value.trim();
             const cashExpenses = item.querySelector('.expenses-amount').value;
             if (itemExpenses !== '' && cashExpenses !== '') {
-                appData.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
+                _this.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
             }
         });
     },
@@ -129,29 +130,32 @@ const appData = {
         }
     },
     getIncome: function() {
+        const _this = this;
         incomeItems.forEach(function(item) {
             const itemIncome = item.querySelector('.income-title').value.trim();
             const cashIncome = item.querySelector('.income-amount').value;
             if (itemIncome !== '' && cashIncome !== '') {
-                appData.income[itemIncome.toLowerCase()] = +cashIncome;
-                appData.incomeMonth += +cashIncome;
+                _this.income[itemIncome.toLowerCase()] = +cashIncome;
+                _this.incomeMonth += +cashIncome;
             }
         });
     },
     getAddExpenses: function() {
         const addExpenses = additionalExpensesItem.value.toLowerCase().split(', ');
+        const _this = this;
         addExpenses.forEach(function(item) {
             item = item.trim();
             if (item !== '') {
-                appData.addExpenses.push(item);
+                _this.addExpenses.push(item);
             }
         });
     },
     getAddIncome: function() {
+        const _this = this;
         additionalIncomeItems.forEach(function(item) {
             const itemValue = item.value.trim();
             if (itemValue !== '') {
-                appData.addIncome.push(itemValue);
+                _this.addIncome.push(itemValue);
             }
         });
     },
@@ -205,8 +209,9 @@ const appData = {
         return this.budgetMonth * periodRange.value;
     },
     listenIncomePeriod: function() {
+        const _this = this;
         periodRange.addEventListener('input', function() {
-            incomePeriodValue.value = appData.calcPeriod();
+            incomePeriodValue.value = _this.calcPeriod();
         });
     },
     resetInput: function() {
