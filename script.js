@@ -45,7 +45,7 @@ const appData = {
     budgetMonth: 0,
     expensesMonth: 0,
     start: function() {
-        this.blockInput();
+        this.blockInputs();
         this.getExpenses();
         this.getIncome();
         this.getExpensesMonth();
@@ -76,19 +76,19 @@ const appData = {
         this.budgetDay = 0;
         this.budgetMonth = 0;
         this.expensesMonth = 0;
-        this.resetInput();
+        this.resetInputs();
         this.showCalcBtn();
         this.blockStart();
 
         for (let i = 1; i < incomeItems.length; i++) {
-            incomeItems[i].parentNode.removeChild(incomeItems[i]);
-            incomeAddButton.style.display = 'block';
+            incomeItems[i].remove(incomeItems[i]);
         }
+        incomeAddButton.style.display = 'block';
 
         for (let i = 1; i < expensesItems.length; i++) {
-            expensesItems[i].parentNode.removeChild(expensesItems[i]);
-            expensesAddButton.style.display = 'block';
+            expensesItems[i].remove(expensesItems[i]);
         }
+        expensesAddButton.style.display = 'block';
     },
     showResult: function() {
         budgetMonthValue.value = this.budgetMonth; 
@@ -104,6 +104,7 @@ const appData = {
         cloneExpensesItem.querySelector('.expenses-title').value = '';
         cloneExpensesItem.querySelector('.expenses-amount').value = '';
         expensesAddButton.before(cloneExpensesItem);
+        AddListenerForInputs();
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
@@ -124,6 +125,7 @@ const appData = {
         cloneIncomeItem.querySelector('.income-title').value = '';
         cloneIncomeItem.querySelector('.income-amount').value = '';
         incomeAddButton.before(cloneIncomeItem);
+        AddListenerForInputs();
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
@@ -163,7 +165,7 @@ const appData = {
         periodAmount.textContent = periodRange.value;
     },
     blockStart: function() {
-        calculateBtn.disabled = !salaryAmount.value;
+        calculateBtn.disabled = !salaryAmount.value.trim();
     },
     getExpensesMonth: function() {
         for (let expenseName in this.expenses) {
@@ -214,13 +216,13 @@ const appData = {
             incomePeriodValue.value = _this.calcPeriod();
         });
     },
-    resetInput: function() {
+    resetInputs: function() {
         document.querySelectorAll('[type="text"]').forEach((item) => {
             item.disabled = false;
             item.value = '';
         });
     },
-    blockInput: function() {
+    blockInputs: function() {
         document.querySelectorAll('[type="text"]').forEach((item) => {
             item.disabled = true;
         });
@@ -232,14 +234,23 @@ const appData = {
     showCalcBtn: function() {
         cancelBtn.style.display = 'none';
         calculateBtn.style.display = 'block';
-    }
+    },
+    handleTextInput: function(event) {
+        const target = event.target;
+        const regStr = /[A-Za-z0-9]/g;
+        target.value = target.value.replace(regStr, '');
+    },
+    changeInputNumber: function(event) {
+        const target = event.target;
+        const regStr = /\D/g;
+        target.value = target.value.replace(regStr, '');
+    },
 };
-const start = appData.start.bind(appData);
-const reset = appData.reset.bind(appData);
+
 appData.blockStart();
 salaryAmount.addEventListener('input', appData.blockStart);
-calculateBtn.addEventListener('click', start);
-cancelBtn.addEventListener('click', reset);
+calculateBtn.addEventListener('click', appData.start.bind(appData));
+cancelBtn.addEventListener('click', appData.reset.bind(appData));
 
 expensesAddButton.addEventListener('click', appData.addExpensesBlock);
 
@@ -247,24 +258,17 @@ incomeAddButton.addEventListener('click', appData.addIncomeBlock);
 
 periodRange.addEventListener('input', appData.changeNumRange);
 
-const changeInputText = function(event) {
-    const target = event.target;
-    const regStr = /[A-Za-z0-9]/g;
-    target.value = target.value.replace(regStr, '');
-};
+function AddListenerForInputs() {
+    document.querySelectorAll('[placeholder="Наименование"], [placeholder="название"]').forEach(input => {
+        input.addEventListener('input', appData.handleTextInput);
+    });
+    
+    document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
+        input.addEventListener('input', appData.changeInputNumber);
+    });
+}
 
-const changeInputNumber = function(event) {
-    const target = event.target;
-    const regStr = /\D/g;
-    target.value = target.value.replace(regStr, '');
-};
-
-document.querySelectorAll('[placeholder="Наименование"]').forEach(input => {
-    input.addEventListener('input', changeInputText);
-});
-document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
-    input.addEventListener('input', changeInputNumber);
-});
+AddListenerForInputs();
 
 // appData.targetMonth > 0 ? 
 //     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
