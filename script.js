@@ -45,7 +45,7 @@ const appData = {
     budgetMonth: 0,
     expensesMonth: 0,
     start: function() {
-        this.blockInputs();
+        this.blockLeftElems();
         this.getExpenses();
         this.getIncome();
         this.getExpensesMonth();
@@ -57,13 +57,6 @@ const appData = {
         this.showResult();
     },
     reset: function() {
-        budgetMonthValue.value = ''; 
-        budgetDayValue.value = '';
-        expensesMonthValue.value = '';
-        additionalExpensesValue.value = '';
-        additionalIncomeValue.value = '';
-        targetMonthValue.value = '';
-        incomePeriodValue.value = '';
         this.income = {};
         this.incomeMonth = 0;
         this.addIncome = [];
@@ -76,9 +69,13 @@ const appData = {
         this.budgetDay = 0;
         this.budgetMonth = 0;
         this.expensesMonth = 0;
-        this.resetInputs();
-        this.showCalcBtn();
+        periodRange.value = 1;
+        this.changeNumRange();
+        this.resetLeftItems();
         this.blockStart();
+        this.showCalcBtn();
+        this.showResult();
+        targetMonthValue.value = 0;
 
         for (let i = 1; i < incomeItems.length; i++) {
             incomeItems[i].remove(incomeItems[i]);
@@ -104,7 +101,7 @@ const appData = {
         cloneExpensesItem.querySelector('.expenses-title').value = '';
         cloneExpensesItem.querySelector('.expenses-amount').value = '';
         expensesAddButton.before(cloneExpensesItem);
-        AddListenerForInputs();
+        addListenerForInputs();
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
@@ -125,7 +122,7 @@ const appData = {
         cloneIncomeItem.querySelector('.income-title').value = '';
         cloneIncomeItem.querySelector('.income-amount').value = '';
         incomeAddButton.before(cloneIncomeItem);
-        AddListenerForInputs();
+        addListenerForInputs();
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
@@ -216,14 +213,25 @@ const appData = {
             incomePeriodValue.value = _this.calcPeriod();
         });
     },
-    resetInputs: function() {
-        document.querySelectorAll('[type="text"]').forEach((item) => {
+    resetLeftItems: function() {
+        depositCheckbox.disabled = false;
+        depositCheckbox.checked=false;
+
+        incomeAddButton.disabled = false;
+        expensesAddButton.disabled = false;
+
+        document.querySelector('.data').querySelectorAll('[type="text"]').forEach((item) => {
             item.disabled = false;
             item.value = '';
         });
     },
-    blockInputs: function() {
-        document.querySelectorAll('[type="text"]').forEach((item) => {
+    blockLeftElems: function() {
+        depositCheckbox.disabled = true;
+
+        incomeAddButton.disabled = true;
+        expensesAddButton.disabled = true;
+
+        document.querySelector('.data').querySelectorAll('[type="text"]').forEach((item) => {
             item.disabled = true;
         });
     },
@@ -235,14 +243,14 @@ const appData = {
         cancelBtn.style.display = 'none';
         calculateBtn.style.display = 'block';
     },
-    handleTextInput: function(event) {
+    handleTextinput: function(event) {
         const target = event.target;
-        const regStr = /[A-Za-z0-9]/g;
+        const regStr = /[^а-яё, ]/gi;
         target.value = target.value.replace(regStr, '');
     },
-    changeInputNumber: function(event) {
+    handleNumberinput: function(event) {
         const target = event.target;
-        const regStr = /\D/g;
+        const regStr = /[^0-9.]/;
         target.value = target.value.replace(regStr, '');
     },
 };
@@ -258,17 +266,17 @@ incomeAddButton.addEventListener('click', appData.addIncomeBlock);
 
 periodRange.addEventListener('input', appData.changeNumRange);
 
-function AddListenerForInputs() {
+function addListenerForInputs() {
     document.querySelectorAll('[placeholder="Наименование"], [placeholder="название"]').forEach(input => {
-        input.addEventListener('input', appData.handleTextInput);
+        input.addEventListener('input', appData.handleTextinput);
     });
     
     document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
-        input.addEventListener('input', appData.changeInputNumber);
+        input.addEventListener('input', appData.handleNumberinput);
     });
 }
 
-AddListenerForInputs();
+addListenerForInputs();
 
 // appData.targetMonth > 0 ? 
 //     console.log(`Цель будет достигнута через ${appData.targetMonth} месяца(ев)`) : 
