@@ -24,7 +24,6 @@ const depositPercent = document.querySelector('.deposit-percent');
 const cancelBtn = document.getElementById('cancel');
 const dataElem = document.querySelector('.data');
 const resultElem = document.querySelector('.result');
-const dataInputsTypeText = dataElem.querySelectorAll('[type="text"]');
 
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -50,7 +49,6 @@ const AppData = function() {
 };
 
 AppData.prototype.start = function() {
-    this.blockDataElems();
     this.getExpenses();
     this.getIncome();
     this.getExpensesMonth();
@@ -59,6 +57,7 @@ AppData.prototype.start = function() {
     this.getBudget();
     this.listenIncomePeriod();
     this.hideCalcBtn();
+    this.blockDataElems();
     this.showResult();
 };
 
@@ -109,7 +108,7 @@ AppData.prototype.addExpensesBlock = function() {
     cloneExpensesItem.querySelector('.expenses-title').value = '';
     cloneExpensesItem.querySelector('.expenses-amount').value = '';
     expensesAddButton.before(cloneExpensesItem);
-    addListenerForInputs();
+    this.addListenerForInputs();
     expensesItems = document.querySelectorAll('.expenses-items');
     if (expensesItems.length >= 3) {
         expensesAddButton.style.display = 'none';
@@ -132,7 +131,7 @@ AppData.prototype.addIncomeBlock = function() {
     cloneIncomeItem.querySelector('.income-title').value = '';
     cloneIncomeItem.querySelector('.income-amount').value = '';
     incomeAddButton.before(cloneIncomeItem);
-    addListenerForInputs();
+    this.addListenerForInputs();
     incomeItems = document.querySelectorAll('.income-items');
     if (incomeItems.length >= 3) {
         incomeAddButton.style.display = 'none';
@@ -183,7 +182,7 @@ AppData.prototype.getExpensesMonth = function() {
 };
 
 AppData.prototype.getBudget = function() {
-    this.budget = salaryAmount.value;
+    this.budget = +salaryAmount.value;
     this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
     this.budgetDay = Math.floor(this.budgetMonth / 30);
 };
@@ -255,7 +254,7 @@ AppData.prototype.blockDataElems = function() {
     incomeAddButton.disabled = true;
     expensesAddButton.disabled = true;
 
-    dataInputsTypeText.forEach((item) => {
+    dataElem.querySelectorAll('[type="text"]').forEach(function(item) {
         item.disabled = true;
     });
 };
@@ -286,29 +285,29 @@ AppData.prototype.blockStart = function() {
     calculateBtn.disabled = !salaryAmount.value.trim();
 };
 
-const appData = new AppData();
-
-console.log(appData);
-
-salaryAmount.addEventListener('input', appData.blockStart);
-appData.blockStart();
-calculateBtn.addEventListener('click', appData.start.bind(appData));
-cancelBtn.addEventListener('click', appData.reset.bind(appData));
-
-expensesAddButton.addEventListener('click', appData.addExpensesBlock);
-
-incomeAddButton.addEventListener('click', appData.addIncomeBlock);
-
-periodRange.addEventListener('input', appData.changeNumRange);
-
-function addListenerForInputs() {
+AppData.prototype.addListenerForInputs = function() {
     document.querySelectorAll('[placeholder="Наименование"], [placeholder="название"]').forEach(input => {
-        input.addEventListener('input', appData.handleTextinput);
+        input.addEventListener('input', this.handleTextinput);
     });
     
     document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
-        input.addEventListener('input', appData.handleNumberinput);
+        input.addEventListener('input', this.handleNumberinput);
     });
-}
+};
 
-addListenerForInputs();
+AppData.prototype.eventsListenersAndStart = function() {
+    this.blockStart();
+    this.addListenerForInputs();
+    salaryAmount.addEventListener('input', this.blockStart);
+    calculateBtn.addEventListener('click', this.start.bind(this));
+    cancelBtn.addEventListener('click', this.reset.bind(this));
+    expensesAddButton.addEventListener('click', this.addExpensesBlock.bind(this));
+    incomeAddButton.addEventListener('click', this.addIncomeBlock.bind(this));
+    periodRange.addEventListener('input', this.changeNumRange);
+};
+
+const appData = new AppData();
+
+appData.eventsListenersAndStart();
+
+console.log(appData);
