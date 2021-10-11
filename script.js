@@ -23,6 +23,7 @@ const depositAmount = document.querySelector('.deposit-amount');
 const depositPercent = document.querySelector('.deposit-percent');
 const cancelBtn = document.getElementById('cancel');
 const dataElem = document.querySelector('.data');
+const resultElem = document.querySelector('.result');
 const dataInputsTypeText = dataElem.querySelectorAll('[type="text"]');
 
 const isNumber = function(n) {
@@ -71,13 +72,10 @@ const appData = {
         this.budgetDay = 0;
         this.budgetMonth = 0;
         this.expensesMonth = 0;
-        periodRange.value = 1;
-        this.changeNumRange();
-        this.resetDataItems();
-        this.blockStart();
+        
+        this.resetInputsAndBtns();
         this.showCalcBtn();
-        this.showResult();
-        targetMonthValue.value = 0;
+        this.blockStart();
 
         for (let i = 1; i < incomeItems.length; i++) {
             incomeItems[i].remove(incomeItems[i]);
@@ -88,6 +86,9 @@ const appData = {
             expensesItems[i].remove(expensesItems[i]);
         }
         expensesAddButton.style.display = 'block';
+
+        periodRange.value = '1';
+        periodAmount.textContent = '1';
     },
     showResult: function() {
         budgetMonthValue.value = this.budgetMonth; 
@@ -212,15 +213,19 @@ const appData = {
             incomePeriodValue.value = _this.calcPeriod();
         });
     },
-    resetDataItems: function() {
+    resetInputsAndBtns: function() {
         depositCheckbox.disabled = false;
         depositCheckbox.checked = false;
 
         incomeAddButton.disabled = false;
         expensesAddButton.disabled = false;
 
-        dataInputsTypeText.forEach((item) => {
+        dataElem.querySelectorAll('input').forEach((item) => {
             item.disabled = false;
+            item.value = '';
+        });
+
+        resultElem.querySelectorAll('input').forEach(function(item) {
             item.value = '';
         });
     },
