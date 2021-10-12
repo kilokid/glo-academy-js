@@ -116,12 +116,11 @@ AppData.prototype.addExpensesBlock = function() {
 };
 
 AppData.prototype.getExpenses = function() {
-    const _this = this;
-    expensesItems.forEach(function(item) {
+    expensesItems.forEach((item) => {
         const itemExpenses = item.querySelector('.expenses-title').value.trim();
         const cashExpenses = item.querySelector('.expenses-amount').value;
         if (itemExpenses !== '' && cashExpenses !== '') {
-            _this.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
+            this.expenses[itemExpenses.toLowerCase()] = +cashExpenses;
         }
     });
 };
@@ -139,34 +138,31 @@ AppData.prototype.addIncomeBlock = function() {
 };
 
 AppData.prototype.getIncome = function() {
-    const _this = this;
-    incomeItems.forEach(function(item) {
+    incomeItems.forEach((item) => {
         const itemIncome = item.querySelector('.income-title').value.trim();
         const cashIncome = item.querySelector('.income-amount').value;
         if (itemIncome !== '' && cashIncome !== '') {
-            _this.income[itemIncome.toLowerCase()] = +cashIncome;
-            _this.incomeMonth += +cashIncome;
+            this.income[itemIncome.toLowerCase()] = +cashIncome;
+            this.incomeMonth += +cashIncome;
         }
     });
 };
 
 AppData.prototype.getAddExpenses = function() {
     const addExpenses = additionalExpensesItem.value.toLowerCase().split(', ');
-    const _this = this;
-    addExpenses.forEach(function(item) {
+    addExpenses.forEach((item) => {
         item = item.trim();
         if (item !== '') {
-            _this.addExpenses.push(item);
+            this.addExpenses.push(item);
         }
     });
 };
 
 AppData.prototype.getAddIncome = function() {
-    const _this = this;
-    additionalIncomeItems.forEach(function(item) {
+    additionalIncomeItems.forEach((item) => {
         const itemValue = item.value.trim();
         if (itemValue !== '') {
-            _this.addIncome.push(itemValue);
+            this.addIncome.push(itemValue);
         }
     });
 };
@@ -225,9 +221,8 @@ AppData.prototype.calcPeriod = function() {
 };
 
 AppData.prototype.listenIncomePeriod = function() {
-    const _this = this;
-    periodRange.addEventListener('input', function() {
-        incomePeriodValue.value = _this.calcPeriod();
+    periodRange.addEventListener('input', () => {
+        incomePeriodValue.value = this.calcPeriod();
     });
 };
 
