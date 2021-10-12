@@ -1,7 +1,7 @@
 const DomElement = function(selector, styles) {
     this.selector = selector;
 
-    styles = styles || {};
+    styles = styles ?? {};
     this.height = styles.height;
     this.width = styles.width;
     this.bg = styles.bg;
@@ -21,6 +21,9 @@ DomElement.prototype.create = function() {
             element = document.createElement('p');
             element.id = this.selector.slice(1);
             break;
+        
+        default:
+            element = document.createElement('div');
     }
     element.textContent = 'hello world';
 
