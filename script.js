@@ -76,7 +76,8 @@ class AppData {
         this.budgetDay = 0;
         this.budgetMonth = 0;
         this.expensesMonth = 0;
-        
+        depositCheckbox.checked = false;
+        this.depositHandler();
         this.resetInputsAndBtns();
         this.showCalcBtn();
         this.blockStart();
@@ -266,12 +267,6 @@ class AppData {
         target.value = target.value.replace(regStr, '');
     }
 
-    // handlePercenteInput(event) {
-    //     const target = event.target;
-    //     const regStr = /[^[1-9][0-9]?$|^100$]/;
-    //     target.value = target.value.replace(regStr, '');
-    // }
-
     blockStart() {
         calculateBtn.disabled = !salaryAmount.value.trim();
     }
@@ -309,18 +304,20 @@ class AppData {
             input.addEventListener('input', this.handleTextinput);
         });
         
-        document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
+        document.querySelectorAll('[placeholder="Сумма"], [placeholder="Процент"]').forEach(input => {
             input.addEventListener('input', this.handleNumberinput);
         });
 
-        document.querySelector('[placeholder="Процент"]').addEventListener('input', (event) => {
+        depositPercent.addEventListener('input', (event) => {
             const target = event.target;
             if (target.value > 100) {
                 alert('Введите корректное значение в поле проценты');
                 target.value = '';
                 calculateBtn.disabled = true;
-            } else {
+            } else if (target.value > 0) {
                 calculateBtn.disabled = false;
+            } else if (target.value === '') {
+                calculateBtn.disabled = true;
             }
         });
     }
