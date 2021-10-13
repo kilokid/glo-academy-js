@@ -202,10 +202,8 @@ class AppData {
     }
 
     getInfoDeposit() {
-        if (this.deposit) {
-            this.percentDeposit = depositPercent.value;
-            this.moneyDeposit = depositAmount.value;
-        }
+        this.percentDeposit = depositPercent.value;
+        this.moneyDeposit = depositAmount.value;
     }
 
     calcPeriod() {
@@ -268,6 +266,12 @@ class AppData {
         target.value = target.value.replace(regStr, '');
     }
 
+    // handlePercenteInput(event) {
+    //     const target = event.target;
+    //     const regStr = /[^[1-9][0-9]?$|^100$]/;
+    //     target.value = target.value.replace(regStr, '');
+    // }
+
     blockStart() {
         calculateBtn.disabled = !salaryAmount.value.trim();
     }
@@ -275,8 +279,10 @@ class AppData {
     changePercent() {
         const valueSelect = this.value;
         if (valueSelect === 'other') {
-            // Домашнее задание
+            depositPercent.value = '';
+            depositPercent.style.display = 'inline-block';
         } else {
+            depositPercent.style.display = 'none';
             depositPercent.value = valueSelect;
         }
     }
@@ -290,6 +296,7 @@ class AppData {
         } else {
             depositBank.style.display = 'none';
             depositAmount.style.display = 'none';
+            depositPercent.style.display = 'none';
             depositBank.value = '';
             depositAmount.value = '';
             this.deposit = false;
@@ -304,6 +311,17 @@ class AppData {
         
         document.querySelectorAll('[placeholder="Сумма"]').forEach(input => {
             input.addEventListener('input', this.handleNumberinput);
+        });
+
+        document.querySelector('[placeholder="Процент"]').addEventListener('input', (event) => {
+            const target = event.target;
+            if (target.value > 100) {
+                alert('Введите корректное значение в поле проценты');
+                target.value = '';
+                calculateBtn.disabled = true;
+            } else {
+                calculateBtn.disabled = false;
+            }
         });
     }
 
