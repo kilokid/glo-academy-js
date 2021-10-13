@@ -19,11 +19,12 @@ const additionalExpensesItem = document.querySelector('.additional_expenses-item
 const targetAmount = document.querySelector('.target-amount');
 const periodRange = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
-const depositAmount = document.querySelector('.deposit-amount');
-const depositPercent = document.querySelector('.deposit-percent');
 const cancelBtn = document.getElementById('cancel');
 const dataElem = document.querySelector('.data');
 const resultElem = document.querySelector('.result');
+const depositBank = document.querySelector('.deposit-bank');
+const depositAmount = document.querySelector('.deposit-amount');
+const depositPercent = document.querySelector('.deposit-percent');
 
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -54,6 +55,7 @@ class AppData {
         this.getExpensesMonth();
         this.getAddExpenses();
         this.getAddIncome();
+        this.getInfoDeposit();
         this.getBudget();
         this.listenIncomePeriod();
         this.hideCalcBtn();
@@ -177,8 +179,9 @@ class AppData {
     }
 
     getBudget() {
+        const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
         this.budget = +salaryAmount.value;
-        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
         this.budgetDay = Math.floor(this.budgetMonth / 30);
     }
 
@@ -198,20 +201,10 @@ class AppData {
         } 
     }
 
-    getDepositInfo() {
-        this.deposit = confirm('Есть ли у вас депозит в банке?');
+    getInfoDeposit() {
         if (this.deposit) {
-            let percentDeposit = 0;
-            do {
-                percentDeposit = prompt('Какой годовой процент?', '10');
-            } while (!isNumber(percentDeposit) || percentDeposit <= 0);
-            this.percentDeposit = percentDeposit;
-    
-            let moneyDeposit = 0;
-            do {
-                moneyDeposit = prompt('Какая сумма заложена?', '10000');
-            } while (!isNumber(moneyDeposit) || moneyDeposit <= 0);
-            this.moneyDeposit = moneyDeposit;
+            this.percentDeposit = depositPercent.value;
+            this.moneyDeposit = depositAmount.value;
         }
     }
 
@@ -279,6 +272,31 @@ class AppData {
         calculateBtn.disabled = !salaryAmount.value.trim();
     }
 
+    changePercent() {
+        const valueSelect = this.value;
+        if (valueSelect === 'other') {
+            // Домашнее задание
+        } else {
+            depositPercent.value = valueSelect;
+        }
+    }
+
+    depositHandler() {
+        if (depositCheckbox.checked) {
+            depositBank.style.display = 'inline-block';
+            depositAmount.style.display = 'inline-block';
+            this.deposit = true;
+            depositBank.addEventListener('change', this.changePercent);
+        } else {
+            depositBank.style.display = 'none';
+            depositAmount.style.display = 'none';
+            depositBank.value = '';
+            depositAmount.value = '';
+            this.deposit = false;
+            depositBank.removeEventListener('change', this.changePercent);
+        }
+    }
+
     addListenerForInputs() {
         document.querySelectorAll('[placeholder="Наименование"], [placeholder="название"]').forEach(input => {
             input.addEventListener('input', this.handleTextinput);
@@ -298,6 +316,7 @@ class AppData {
         expensesAddButton.addEventListener('click', this.addExpensesBlock.bind(this));
         incomeAddButton.addEventListener('click', this.addIncomeBlock.bind(this));
         periodRange.addEventListener('input', this.changeNumRange);
+        depositCheckbox.addEventListener('change', this.depositHandler.bind(this));
     }
 }
 
