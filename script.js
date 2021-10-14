@@ -277,6 +277,7 @@ class AppData {
 
     blockStart() {
         calculateBtn.disabled = !salaryAmount.value.trim();
+        this.addListenerForInputs();
     }
 
     addListenerForInputs() {
@@ -291,7 +292,6 @@ class AppData {
 
     eventsListenersAndStart() {
         this.blockStart();
-        this.addListenerForInputs();
         salaryAmount.addEventListener('input', this.blockStart);
         calculateBtn.addEventListener('click', this.start.bind(this));
         cancelBtn.addEventListener('click', this.reset.bind(this));
