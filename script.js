@@ -55,7 +55,7 @@ class AppData {
         this.getExpensesMonth();
         this.getAddExpenses();
         this.getAddIncome();
-        this.getInfoDeposit();
+        this.getDepositInfo();
         this.getBudget();
         this.listenIncomePeriod();
         this.hideCalcBtn();
@@ -110,8 +110,9 @@ class AppData {
         const cloneExpensesItem = expensesItems[0].cloneNode(true);
         cloneExpensesItem.querySelector('.expenses-title').value = '';
         cloneExpensesItem.querySelector('.expenses-amount').value = '';
+        cloneExpensesItem.querySelector('.expenses-title').addEventListener('input', this.handleTextinput);
+        cloneExpensesItem.querySelector('.expenses-amount').addEventListener('input', this.handleNumberinput);
         expensesAddButton.before(cloneExpensesItem);
-        this.addListenerForInputs();
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length >= 3) {
             expensesAddButton.style.display = 'none';
@@ -122,8 +123,9 @@ class AppData {
         const cloneIncomeItem = incomeItems[0].cloneNode(true);
         cloneIncomeItem.querySelector('.income-title').value = '';
         cloneIncomeItem.querySelector('.income-amount').value = '';
+        cloneIncomeItem.querySelector('.income-title').addEventListener('input', this.handleTextinput);
+        cloneIncomeItem.querySelector('.income-amount').addEventListener('input', this.handleNumberinput);
         incomeAddButton.before(cloneIncomeItem);
-        this.addListenerForInputs();
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length >= 3) {
             incomeAddButton.style.display = 'none';
@@ -202,7 +204,7 @@ class AppData {
         } 
     }
 
-    getInfoDeposit() {
+    getDepositInfo() {
         this.percentDeposit = depositPercent.value;
         this.moneyDeposit = depositAmount.value;
     }
@@ -232,6 +234,8 @@ class AppData {
         resultElem.querySelectorAll('input').forEach((item) => {
             item.value = '';
         });
+
+        depositBank.disabled = false;
     }
 
     blockDataElems() {
@@ -243,6 +247,8 @@ class AppData {
         dataElem.querySelectorAll('[type="text"]').forEach((item) => {
             item.disabled = true;
         });
+
+        depositBank.disabled = true;
     }
 
     hideCalcBtn() {
@@ -275,6 +281,7 @@ class AppData {
         const valueSelect = this.value;
         if (valueSelect === 'other') {
             depositPercent.value = '';
+            calculateBtn.disabled = true;
             depositPercent.style.display = 'inline-block';
         } else {
             depositPercent.style.display = 'none';
@@ -307,24 +314,24 @@ class AppData {
         document.querySelectorAll('[placeholder="Сумма"], [placeholder="Процент"]').forEach(input => {
             input.addEventListener('input', this.handleNumberinput);
         });
+    }
 
-        depositPercent.addEventListener('input', (event) => {
-            const target = event.target;
-            if (target.value > 100) {
-                alert('Введите корректное значение в поле проценты');
-                target.value = '';
-                calculateBtn.disabled = true;
-            } else if (target.value > 0) {
-                calculateBtn.disabled = false;
-            } else if (target.value === '') {
-                calculateBtn.disabled = true;
-            }
-        });
+    listenPercentLength(event) {
+        const target = event.target;
+        if (target.value > 100) {
+            target.value = target.value.slice(0, 2);
+            alert('Введите корректное значение в поле проценты');
+        } else if (target.value > 0 && salaryAmount.value.trim()) {
+            calculateBtn.disabled = false;
+        } else if (target.value === '') {
+            calculateBtn.disabled = true;
+        }
     }
 
     eventsListenersAndStart() {
         this.blockStart();
         this.addListenerForInputs();
+        depositPercent.addEventListener('input', this.listenPercentLength);
         salaryAmount.addEventListener('input', this.blockStart);
         calculateBtn.addEventListener('click', this.start.bind(this));
         cancelBtn.addEventListener('click', this.reset.bind(this));
