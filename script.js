@@ -102,33 +102,29 @@ class AppData {
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcPeriod();
     }
-
-    addExpensesBlock() {
-        const cloneExpensesItem = expensesItems[0].cloneNode(true);
-        cloneExpensesItem.querySelector('.expenses-title').value = '';
-        cloneExpensesItem.querySelector('.expenses-amount').value = '';
-        expensesAddButton.before(cloneExpensesItem);
+    
+    addExpInc(item, name) {
+        const cloneItem = item[0].cloneNode(true);
+        cloneItem.querySelector(`.${name}-title`).value = '';
+        cloneItem.querySelector(`.${name}-amount`).value = '';
+        if (name === 'expenses') {
+            expensesAddButton.before(cloneItem);
+        } else if (name === 'income') {
+            incomeAddButton.before(cloneItem);
+        }
         this.addListenerForInputs();
-        expensesItems = document.querySelectorAll('.expenses-items');
-        if (expensesItems.length >= 3) {
-            expensesAddButton.style.display = 'none';
+        item = document.querySelectorAll(`.${name}-items`);
+        if (item.length >= 3) {
+            if (name === 'expenses') {
+                expensesAddButton.style.display = 'none';
+            } else if (name === 'income') {
+                incomeAddButton.style.display = 'none';
+            }
         }
     }
-
-    addIncomeBlock() {
-        const cloneIncomeItem = incomeItems[0].cloneNode(true);
-        cloneIncomeItem.querySelector('.income-title').value = '';
-        cloneIncomeItem.querySelector('.income-amount').value = '';
-        incomeAddButton.before(cloneIncomeItem);
-        this.addListenerForInputs();
-        incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length >= 3) {
-            incomeAddButton.style.display = 'none';
-        }
-    }
-
+    
     getExpInc() {
-
+        
         const count = item => {
             const startStr = item.className.split('-')[0];
             const itemTitle = item.querySelector(`.${startStr}-title`).value.trim();
@@ -137,16 +133,17 @@ class AppData {
                 this[startStr][itemTitle.toLowerCase()] = +itemAmount;
             }
         };
-    
+        
         incomeItems.forEach(count);
-    
+        
         expensesItems.forEach(count);
-    
+        
         for (let key in this.income) {
             this.incomeMonth += +this.income[key];
         }
     }
-
+    
+    
     getAddExpenses() {
         const addExpenses = additionalExpensesItem.value.toLowerCase().split(', ');
         addExpenses.forEach((item) => {
@@ -165,6 +162,21 @@ class AppData {
             }
         });
     }
+
+    // getAddExpInc(items, name) {
+    //     const addItem = items.value.toLowerCase(),split(', ');
+
+    //     items.forEach(item => {
+    //         const itemValue = item.value.trim();
+    //         if (itemValue !== '') {
+    //             if (name === 'income') {
+    //                 this.addIncome.push(itemValue);
+    //             } else if (name === 'expenses') {
+    //                 this.addExpenses.push(item);
+    //             }
+    //         }
+    //     });
+    // }
 
     changeNumRange() {
         periodAmount.textContent = periodRange.value;
@@ -295,8 +307,8 @@ class AppData {
         salaryAmount.addEventListener('input', this.blockStart);
         calculateBtn.addEventListener('click', this.start.bind(this));
         cancelBtn.addEventListener('click', this.reset.bind(this));
-        expensesAddButton.addEventListener('click', this.addExpensesBlock.bind(this));
-        incomeAddButton.addEventListener('click', this.addIncomeBlock.bind(this));
+        expensesAddButton.addEventListener('click', this.addExpInc.bind(this,expensesItems, 'expenses'));
+        incomeAddButton.addEventListener('click', this.addExpInc.bind(this,incomeItems, 'income'));
         periodRange.addEventListener('input', this.changeNumRange);
     }
 }
